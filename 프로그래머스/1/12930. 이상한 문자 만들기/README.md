@@ -52,3 +52,9 @@
 
 
 > 출처: 프로그래머스 코딩 테스트 연습, https://school.programmers.co.kr/learn/challenges
+
+## 필요 함수
+<ul>
+<li>Character.toUpperCase / Character.toLowerCase -> 대소문자 변환</li>
+<li>문자열.charAt(i) -> 문자열 접근</li>
+</ul>
