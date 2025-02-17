@@ -82,3 +82,9 @@
 
 
 > 출처: 프로그래머스 코딩 테스트 연습, https://school.programmers.co.kr/learn/challenges
+
+## 필요 함수
+<ul>
+<li>HashSet 사용법</li>
+<li>Collections 오름차순, 내림차순 사용법법</li>
+</ul>
