@@ -23,7 +23,10 @@ public class Main
 	        char c = str.charAt(j);
 	        
 	        sum = sum + (int)(map.get(c) * Math.pow(31, j));
+	        
 	    }
+	    sum = sum%1234567891;
+	    
 	     
 	    System.out.println(sum);
 		
