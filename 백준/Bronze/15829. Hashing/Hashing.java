@@ -9,27 +9,16 @@ public class Main
 	    sc.nextLine();
 	    String str = sc.nextLine();
 	    
-	    HashMap<Character, Integer> map = new HashMap<>();
-	    
-	    for(int i=0; i<26; i++) {
-	        char c = (char)('a' + i);
-	        
-	        map.put(c, i+1);
-	        
-	    }
-	    
 	    int sum = 0;
 	    for(int j=0; j<str.length(); j++) {
-	        char c = str.charAt(j);
+	        int t = str.charAt(j) - 'a' + 1;
 	        
-	        sum = sum + (int)(map.get(c) * Math.pow(31, j));
+	        
+	        sum = sum + t * (int)Math.pow(31, j);
 	        
 	    }
 	    sum = sum%1234567891;
 	    
-	     
 	    System.out.println(sum);
-		
-		
 	}
 }
