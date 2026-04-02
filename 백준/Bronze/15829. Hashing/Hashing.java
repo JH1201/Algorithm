@@ -10,14 +10,16 @@ public class Main
 	    String str = sc.nextLine();
 	    
 	    long sum = 0;
+        long r = 1;
+        long mod = 1234567891L;
+        
 	    for(int j=0; j<str.length(); j++) {
 	        long t = str.charAt(j) - 'a' + 1;
-	        
-	        
-	        sum = sum + t * (long)Math.pow(31, j);
+            
+	        sum = (sum + t * r)%mod;
+            r = (r * 31)%mod;
 	        
 	    }
-	    sum = sum%1234567891;
 	    
 	    System.out.println(sum);
 	}
