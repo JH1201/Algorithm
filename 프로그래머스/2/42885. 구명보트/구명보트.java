@@ -8,13 +8,12 @@ class Solution {
         
         int start = 0;
         int end = people.length-1;
-        while(start <= end) {
-            
-            if(people[end--] + people[start] <= limit) start++;
-            answer++;
-            
-        }
         
+        while(start <= end) {
+            int value = people[start] + people[end--];
+            if(value <= limit) start++;
+            answer++;
+        }
        
         return answer;
     }
