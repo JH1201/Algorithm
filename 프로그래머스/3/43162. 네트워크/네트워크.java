@@ -1,34 +1,36 @@
 class Solution {
     static int answer = 0;
     static boolean[] visited;
+    
     public int solution(int n, int[][] computers) {
         
-        // 방문한 컴퓨터의 번호
-        visited = new boolean[computers.length];
+        int len = computers.length;
         
-        for(int i=0; i<n; i++) {
+        visited = new boolean[len];
+        
+        for(int i=0; i<len; i++) {
             if(!visited[i]) {
                 answer++;
-                dfs(i, computers);
+                dfs(computers, i);
             }
         }
         
         return answer;
     }
     
-    public void dfs(int num, int[][] computers) {
-        // 컴퓨터 방문 확인
-        // visited = true
-        if(visited[num]) return;
-        if(!visited[num]) visited[num] = true;
-        System.out.println("현재 컴퓨터 넘버 : " + (num+1) + " / 방문 여부 : " + visited[num]);
+    public void dfs(int[][] computers, int currnetNode) {
         
-        // 연결 확인
-        // 연결된 컴퓨터 방문 visited = true
+        if(visited[currnetNode]) return;
+        
+        visited[currnetNode] = true;
+        
+        // 현재 노드에서 갈 수 있는 방향으로 dfs 실행
         for(int i=0; i<computers.length; i++) {
-            if(!visited[i] && computers[num][i] == 1) dfs(i, computers);
+            if(i == currnetNode) continue;
+            if(computers[i][currnetNode] == 1) {
+                dfs(computers, i);
+            }
         }
-        
         
     }
     
