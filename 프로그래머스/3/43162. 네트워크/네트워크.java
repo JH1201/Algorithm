@@ -1,3 +1,5 @@
+import java.util.*;
+
 class Solution {
     static int answer = 0;
     static boolean[] visited;
@@ -6,31 +8,29 @@ class Solution {
         
         int len = computers.length;
         
-        visited = new boolean[len];
+        visited = new boolean[n+1];
         
-        for(int i=0; i<len; i++) {
-            if(!visited[i]) {
-                answer++;
-                dfs(computers, i);
-            }
+        for(int i=1; i<=len; i++) {
+            if(!visited[i]) answer++;
+            dfs(computers, i);
         }
-        
         return answer;
     }
     
-    public void dfs(int[][] computers, int currnetNode) {
+    public void dfs(int[][] computers, int idx) {
         
-        if(visited[currnetNode]) return;
+        if(visited[idx]) return;
+        visited[idx] = true;
         
-        visited[currnetNode] = true;
+        //System.out.println("idx 노드: " + idx);
         
-        // 현재 노드에서 갈 수 있는 방향으로 dfs 실행
-        for(int i=0; i<computers.length; i++) {
-            if(i == currnetNode) continue;
-            if(computers[i][currnetNode] == 1) {
-                dfs(computers, i);
-            }
+        // 갈 수 있는 노드 확인
+        for(int i=1; i<=computers.length; i++) {
+            
+            if(i == idx) continue;
+            if(computers[i-1][idx-1] == 1) dfs(computers, i);
         }
+        
         
     }
     
