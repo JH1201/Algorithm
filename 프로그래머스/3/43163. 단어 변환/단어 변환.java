@@ -23,27 +23,28 @@ class Solution {
     
     public void bfs(String begin, String target, String[] words) {
         
+        q.offer(begin);
         map.put(begin, 0);
-        q.add(begin);
         
         while(!q.isEmpty()) {
             
-            String tmpStr = q.poll();  // 현재 문자열
+            String curWord = q.poll();
             
-            if(tmpStr.equals(target)) return ;
+            if(curWord.equals(target)) return;
             
-            String[] nextWord = findWord(tmpStr, words);
+            String[] nextWord = findWord(curWord, words);
             
             for(int i=0; i<nextWord.length; i++) {
-                boolean visited = map.containsKey(nextWord[i]);
+                
+                String nw = nextWord[i];
+                boolean visited = map.containsKey(nw);
                 
                 if(visited) continue;
                 
-                map.put(nextWord[i], map.get(tmpStr)+1);
-                q.add(nextWord[i]);
+                map.put(nw, map.get(curWord)+1);
+                q.offer(nw);
             }
         }
-        
         
     }
     
