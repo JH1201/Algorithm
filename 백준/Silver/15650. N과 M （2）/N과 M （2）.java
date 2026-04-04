@@ -16,28 +16,30 @@ public class Main
         
         visited = new boolean[N+1];
         
+        
         for(int i=1; i<=N; i++) {
-            //visited[i] = true;
-            dfs(N, K, 1, i+" ", i);
-            //visited[i] = false;
+            visited[i] = true;
+            dfs(N, K, i, 1, i + " ");
+            visited[i] = false;
         }
         
     }
     
-    public static void dfs(int N, int K, int depth, String res, int n) {
+    public static void dfs(int N, int K, int n, int depth, String res) {
         
         if(depth == K) {
             System.out.println(res);
-            return ;
+            return;
         }
         
         for(int i=n+1; i<=N; i++) {
-            //if(visited[i]) continue;
+            if(visited[i]) continue;
             
-            //visited[i] = true;
-            dfs(N, K, depth+1, res + i +" ", i);
-            //visited[i] = false;
+            visited[i] = true;
+            dfs(N, K, i, depth+1, res + i + " ");
+            visited[i] = false;
         }
+        
         
         
     }
