@@ -18,26 +18,27 @@ public class Main
         
         for(int i=1; i<=N; i++) {
             visited[i] = true;
-            dfs(N, K, i, 1, i + " ");
+            dfs(N, K, 1, i+" ");
             visited[i] = false;
         }
         
     }
     
-    public static void dfs(int N, int K, int n, int depth, String res) {
+    public static void dfs(int N, int K, int depth, String res) {
         
         if(depth == K) {
             System.out.println(res);
-            return;
+            return ;
         }
         
         for(int i=1; i<=N; i++) {
             if(visited[i]) continue;
             
             visited[i] = true;
-            dfs(N, K, i, depth+1, res + i + " ");
+            dfs(N, K, depth+1, res + i +" ");
             visited[i] = false;
         }
+        
         
     }
     
