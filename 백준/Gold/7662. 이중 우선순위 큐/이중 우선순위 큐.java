@@ -6,7 +6,6 @@ public class Main
     public static void main(String[] args) throws Exception {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
 
         int N = Integer.parseInt(br.readLine());
 
@@ -20,10 +19,18 @@ public class Main
             String[] str = new String[2];
 
             for(int j=0; j<K; j++) {
+                /*
                 String tmp = br.readLine();
+                
                 str = tmp.split(" ");
                 String command = str[0];
                 Long M = (long)Integer.parseInt(str[1]);
+                */
+                
+                // 더 빠른 버전
+                StringTokenizer st = new StringTokenizer(br.readLine());
+                String command = st.nextToken();
+                Long M = (long)Integer.parseInt(st.nextToken());
 
                 if(command.equals("I")) {
                     descPQ.offer(M);
