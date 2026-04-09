@@ -7,8 +7,8 @@ class Solution {
     public int[] solution(String[] operations) {
         int[] answer = {};
         
-        PriorityQueue<Integer> maxDeleteQueue = new PriorityQueue<>();
-        PriorityQueue<Integer> minDeleteQueue = new PriorityQueue<>(Collections.reverseOrder());
+        //PriorityQueue<Integer> maxDeleteQueue = new PriorityQueue<>();
+        //PriorityQueue<Integer> minDeleteQueue = new PriorityQueue<>(Collections.reverseOrder());
         ArrayList<Integer> resultQueue = new ArrayList<>();
         
         for(String s : operations) {
