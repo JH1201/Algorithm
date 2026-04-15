@@ -14,10 +14,10 @@ public class Main
         int[][] dp = new int[41][2];
 
         // 초기값
-        dp[0][0] = 1; // fibonacci(0) 호출 시 0 출력 1번
-        dp[0][1] = 0; // fibonacci(0) 호출 시 1 출력 0번
-        dp[1][0] = 0; // fibonacci(1) 호출 시 0 출력 0번
-        dp[1][1] = 1; // fibonacci(1) 호출 시 1 출력 1번
+        dp[0][0] = 1;
+        dp[0][1] = 0; 
+        dp[1][0] = 0; 
+        dp[1][1] = 1; 
         
         // 미리 40까지 계산
         for (int i = 2; i <= 40; i++) {
