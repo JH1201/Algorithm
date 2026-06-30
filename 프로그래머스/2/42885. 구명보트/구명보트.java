@@ -12,22 +12,22 @@ class Solution {
         int sum = 0;
         
         while(i<=j) {
-            sum = people[i] + people[j];
-                
-            if(i == j) {
-                answer++;
-                break;
-            }
-            else if(sum > limit) {
-                answer++;
-                j--;
-            }
             
-            else {
+            sum = people[i] + people[j];
+            
+            if(sum > limit) {
+                j--;
                 answer++;
+            }
+            // 보트 최대 인원은 2명
+            else {
                 i++;
                 j--;
+                answer++;
             }
+            
+            
+            
         }
         
         return answer;
