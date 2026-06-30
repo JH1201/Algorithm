@@ -3,35 +3,33 @@ import java.util.*;
 class Solution {
     public int solution(int[] people, int limit) {
         int answer = 0;
-        
+       
+        // 값 정렬
         Arrays.sort(people);
-        
-        int start = 0;
-        int end = people.length-1;
-        
+       
+        int i=0; 
+        int j=people.length-1;
         int sum = 0;
         
-        while(start<=end) {
-            
-            sum = people[start]+people[end];
-            
-            if(start==end) {
+        while(i<=j) {
+            sum = people[i] + people[j];
+                
+            if(i == j) {
                 answer++;
                 break;
             }
-            
-            if(sum > limit) {
+            else if(sum > limit) {
                 answer++;
-                end--;
+                j--;
             }
+            
             else {
                 answer++;
-                end--;
-                start++;
+                i++;
+                j--;
             }
-            
         }
-       
+        
         return answer;
     }
 }
