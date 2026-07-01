@@ -1,56 +1,57 @@
 import java.util.*;
 
-class Node {
-    int x;
-    int y;
-    int cost;
-    
-    Node(int x, int y,int cost) {
-        this.x = x;
-        this.y = y;
-        this.cost = cost;            
-    }
-}
-
 class Solution {
-    Queue<Node> queue = new LinkedList<>();
+    Queue<Node> q = new LinkedList<>();
     boolean[][] visited = new  boolean[100][100];
+    
+    class Node {
+        int x;
+        int y;
+        int cost;
+        
+        Node(int x, int y,int cost) {
+            this.x = x;
+            this.y = y;
+            this.cost = cost;            
+        }
+    }
     
     public int solution(int[][] maps) {
         int answer = -1;
+        
+        int[] dx = {1,-1,0,0};
+        int[] dy = {0,0,1,-1};
       
+        // 큐에 첫번째 상태 입력
+        q.add(new Node(0, 0, maps[0][0]));
         
-        Node start = new Node(0,0,1);
-        queue.offer(start);
-        //visited[start.x][start.y] = true;
-        
-        int[] dx = new int[]{1, -1, 0, 0};
-        int[] dy = new int[]{0, 0, -1, 1};
-        
-        while(!queue.isEmpty()) {
-            Node current = queue.poll();
+        while(!q.isEmpty()) {
             
-            if(visited[current.x][current.y]) continue;
-            visited[current.x][current.y] = true;
+            Node curNode = q.poll();
             
-            //System.out.println("x = " + current.x + ", y = " + current.y);
-            
-            if(current.x == maps.length-1 && current.y == maps[0].length-1) {
-                answer = current.cost;
+            if(visited[curNode.x][curNode.y]) continue;
+            if(curNode.x == maps.length-1 && curNode.y == maps[0].length-1) {
+                answer  = curNode.cost;
                 break;
             }
             
-            for(int i=0; i<4; i++) {
-                int nx = dx[i] + current.x;
-                int ny = dy[i] + current.y;
+            // 방문 등록
+            visited[curNode.x][curNode.y] = true;
             
-                if(nx < 0 || ny < 0 || nx >= maps.length || ny >= maps[0].length) {
+            // 현재 노드가 갈 수 있는 노드 탐색
+            for(int i=0; i<4; i++) {
+                int x = dx[i] + curNode.x;
+                int y = dy[i] + curNode.y;
+
+                // 벽이거나 map 밖일 때 제외
+                if(y < 0 || x < 0 || x >= maps.length || y >= maps[0].length ) {
                     continue;
                 }
-                if(maps[nx][ny] == 1) {
-                    queue.offer(new Node(nx, ny, current.cost+1));
+                if(maps[x][y] == 1) {
+                    q.add(new Node(x, y, curNode.cost+1));
                 }
             }
+            
         }
         
         return answer;
