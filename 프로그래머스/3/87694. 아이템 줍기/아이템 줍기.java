@@ -14,128 +14,113 @@ class Node {
 
 class Solution {
     
-    PriorityQueue<Node> q = new PriorityQueue<>((a, b) -> a.cost - b.cost);
-    
     boolean[][] visited;
     
     int[] dx = {1, -1, 0, 0};
     int[] dy = {0, 0, 1, -1};
-    Node answerNode;
-    int maxX = 0;
-    int maxY = 0;
     
+    Queue<Node> q = new LinkedList<>();
+    int answer = 0;
+
     public int solution(int[][] rectangle, int characterX, int characterY, int itemX, int itemY) {
         
         boolean[][] boundary = getBoundary(rectangle);
         
-        /*
-        for(int i=0; i<boundary.length; i++) {
-            for(int j=0; j<boundary[i].length; j++) {
-                
-                System.out.print(boundary[i][j] + " | ");
-            }
-            System.out.println();
-        }
-        */
+        visited = new boolean[boundary.length][boundary[0].length];
         
-        visited = new boolean[maxX * 2 + 1][maxY * 2 + 1];
-        
-        Node curLocation = new Node(characterX*2, characterY*2, 0);
-        
-        // 현재 위치 푸시
-        q.offer(curLocation);
+        // 첫번째 노드 등록
+        q.add(new Node(characterX*2, characterY*2, 0));
         visited[characterX*2][characterY*2] = true;
         
-        bfs(boundary, itemX * 2, itemY * 2);
-        
-        int answer = answerNode.cost / 2;
-        //System.out.println("X = " + answerNode.x + ", Y = " + answerNode.y + ", cost : " + answerNode.cost);
-        
-        
+        bfs(boundary, itemX*2, itemY*2);
+     
         return answer;
     }
     
-    public void bfs(boolean[][] boundary, int itemX, int itemY) {
-        
-        while(!q.isEmpty()) {
-            
-            Node curLoc = q.poll();
-            
-            // 목표 좌표일 때 탈출
-            if(curLoc.x == itemX && curLoc.y == itemY) {
-                answerNode = new Node(curLoc.x, curLoc.y, curLoc.cost);
-                break;
-            }
-            
-            // curLoc가 테두리에 있는지 확인
-            if(!checkBoundary(curLoc, boundary)) continue;
-            
-            int cost = curLoc.cost;
-            
-            //System.out.println("----------------------------------------------------");
-            //System.out.println("curLocX = " + curLoc.x + ", curLocY = " + curLoc.y);
-            
-            // 테두리 위에서 curLoc가 갈 수 있는 좌표 확인
-            for (int d = 0; d < 4; d++) {
-                int nx = curLoc.x + dx[d];
-                int ny = curLoc.y + dy[d];
-                
+   public void bfs(boolean[][] boundary, int itemX, int itemY) {
+       
+       while(!q.isEmpty()) {
+           
+           Node curNode = q.poll();
+           
+           if(curNode.x == itemX && curNode.y == itemY) {
+               answer = curNode.cost / 2;
+               break;
+           }
+           
+           for(int i=0; i<4; i++) {
+               int x = dx[i] + curNode.x;
+               int y = dy[i] + curNode.y;
+               
+               if(x < 0 || y < 0 || x >= boundary.length || y >= boundary[0].length) {
+                   continue;
+               }
+               
+               if(visited[x][y]) continue;
+               
+               if(!boundary[x][y]) continue;
 
-                if (nx >= 0 && ny >= 0 && nx < boundary.length && ny < boundary[0].length && !visited[nx][ny] && boundary[nx][ny]) {
-                    q.offer(new Node(nx, ny, cost+1));
-                    visited[nx][ny] = true;
-                }
-            }
-            
-        }
-    }
-    
-    boolean checkBoundary(Node n, boolean[][] boundary) {
-        
-        if (n.x < 0 || n.y < 0 || n.x >= boundary.length || n.y >= boundary[0].length) {
-            return false;
-        }
-        return boundary[n.x][n.y];
-    }
+               visited[x][y] = true;
+               q.add(new Node(x, y, curNode.cost+1));
+               
+               
+           }
+       }
+   }
     
     public boolean[][] getBoundary(int[][] rectangle) {
-        boolean[][] totalMap;
         
-        for(int [] r : rectangle) {
-            maxX = Math.max(maxX, r[2]);
-            maxY = Math.max(maxY, r[3]);
+        int maxX = 0;
+        int maxY = 0;
+        
+        for(int i=0; i<rectangle.length; i++) {
+            for(int j=0; j<rectangle[0].length; j++) {
+                
+                // x값 찾기
+                if(j%2 == 0) {
+                    int tmpX = rectangle[i][j];
+                    if(maxX < tmpX) maxX = tmpX;
+                }
+                
+                // y값 찾기
+                if(j%2 == 1) {
+                    int tmpY = rectangle[i][j];
+                    if(maxY < tmpY) maxY = tmpY;
+                }
+            }
         }
         
-        totalMap = new boolean[maxX*2+1][maxY*2+1];
+        boolean[][] map = new boolean[(maxX*2)+2][(maxY*2)+2];
         
-        for(int[] r : rectangle) {
-            int x1 = r[0] * 2;
-            int y1 = r[1] * 2;
-            int x2 = r[2] * 2;
-            int y2 = r[3] * 2;
+        // map 채우기
+        for(int i=0; i<rectangle.length; i++) {
+            int x1 = rectangle[i][0]*2;
+            int y1 = rectangle[i][1]*2;
+            int x2 = rectangle[i][2]*2;
+            int y2 = rectangle[i][3]*2;
             
             for(int x=x1; x<=x2; x++) {
-                for(int y=y1; y<=y2; y++){
-                    totalMap[x][y] = true;
+                for(int y=y1; y<=y2; y++) {
+                    map[x][y] = true;
                 }
             }
         }
         
-        // 2. 내부는 false로 지움
-        for (int[] r : rectangle) {
-            int x1 = r[0] * 2;
-            int y1 = r[1] * 2;
-            int x2 = r[2] * 2;
-            int y2 = r[3] * 2;
-
-            for (int x = x1 + 1; x < x2; x++) {
-                for (int y = y1 + 1; y < y2; y++) {
-                    totalMap[x][y] = false;
+        // map 경계 안쪽 false로 바꾸기
+        for(int i=0; i<rectangle.length; i++) {
+            int x1 = rectangle[i][0]*2;
+            int y1 = rectangle[i][1]*2;
+            int x2 = rectangle[i][2]*2;
+            int y2 = rectangle[i][3]*2;
+            
+            for(int x=x1+1; x<x2; x++) {
+                for(int y=y1+1; y<y2; y++) {
+                    map[x][y] = false;
                 }
             }
         }
         
-        return totalMap;
+        return map;
     }
     
    
