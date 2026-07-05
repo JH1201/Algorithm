@@ -11,20 +11,19 @@ class Solution {
     
     public void dfs(int[] numbers, int target, int index, int sum) {
         
-        if(index >= numbers.length){
+        if(index >= numbers.length) {
             if(sum == target) {
                 count++;
-            }
+            } 
             return;
-        }
-        
-        int tmp = numbers[index];
+        } 
         
         // 덧셈
-        dfs(numbers, target, index+1, sum+tmp);
+        dfs(numbers, target, index+1, sum + numbers[index]);
         
         // 뺄셈
-        dfs(numbers, target, index+1, sum-tmp);
+        dfs(numbers, target, index+1, sum - numbers[index]);
+        
         
     }
     
