@@ -13,9 +13,9 @@ class Solution {
             return n;
         }
         
-        for (int i = 3; i <= n; i++) {
+        for(int i=3; i<=n; i++) {
             answer = (a + b) % 1000000007;
-
+            
             b = a;
             a = answer;
         }
