@@ -7,25 +7,32 @@ class Solution {
         HashMap<Integer, Integer> map = new HashMap<>();
         
         for(int i=0; i<tangerine.length; i++) {
-            int n = tangerine[i];
-            if(map.get(n) == null) map.put(n, 1);
+            int tmp = tangerine[i];
+            if(map.get(tmp) == null) {
+                map.put(tmp, 1);
+            }
             else {
-                int tmp = map.get(n);
-                map.put(n, tmp+1);
+                map.put(tmp, map.get(tmp)+1);
             }
         }
         
-        List<Integer> sizeCounts = new ArrayList<>(map.values());  // Map의 value를 배열로 생성
-        sizeCounts.sort(Comparator.reverseOrder());  // 배열 내림차순 정렬
+        ArrayList<Integer> list = new ArrayList<>(map.values());
+        Collections.sort(list, Collections.reverseOrder());
         
-        for (int count : sizeCounts) {  // sizeCounts 배열 순회
-            k -= count;  // k에서 count 값 빼기
-            answer++;  // 귤의 종류 +1
-            if (k <= 0) {  // 만약 k가 0보다 작거나 같은 경우
-                break;  // 반복문 종료
-            }
+        /*
+        for(int cnt : list) { 
+            System.out.println(cnt);   
         }
+        */
         
+        for(int cnt : list) {
+            k -= cnt;
+            answer++;
+            if(k <= 0) {
+                break;
+            }
+       
+        }
         
         return answer;
     }
