@@ -6,13 +6,15 @@ class Solution {
         
         Stack<Integer> s = new Stack<>();
         
-        
-        for(int i=numbers.length-1; i>-1; i--) {
+        for(int i = numbers.length - 1; i>=0; i--) {
             
-            while(!s.isEmpty() && numbers[i] >= s.peek()) s.pop();
-           
+            while(!s.isEmpty() && s.peek() <= numbers[i]) {
+                s.pop();
+            }
+            
             if(s.isEmpty()) {
                 answer[i] = -1;
+                s.push(numbers[i]);
             }
             else {
                 answer[i] = s.peek();
@@ -21,7 +23,6 @@ class Solution {
             s.push(numbers[i]);
             
         }
-        
         
         return answer;
     }
