@@ -1,59 +1,79 @@
 import java.util.*;
 
 class Solution {
-    Queue<Node> q = new LinkedList<>();
-    boolean[][] visited = new  boolean[100][100];
     
     class Node {
         int x;
         int y;
         int cost;
         
-        Node(int x, int y,int cost) {
+        public Node(int x, int y, int cost) {
             this.x = x;
             this.y = y;
-            this.cost = cost;            
+            this.cost = cost;
+        }
+        
+        int getX() {
+            return this.x;
+        }
+        
+        int getY() {
+            return this.y;
+        }
+        
+        int getCost() {
+            return this.cost;
         }
     }
     
     public int solution(int[][] maps) {
         int answer = -1;
         
-        int[] dx = {1,-1,0,0};
-        int[] dy = {0,0,1,-1};
-      
-        // 큐에 첫번째 상태 입력
-        q.add(new Node(0, 0, maps[0][0]));
+        Queue<Node> q = new LinkedList<>();
+        int[][] visited = maps.clone();
+        
+        int[] dy = {1, -1, 0, 0};
+        int[] dx = {0, 0, 1, -1};
+        
+        q.offer(new Node(0,0,1));
         
         while(!q.isEmpty()) {
             
-            Node curNode = q.poll();
+            // queue 꺼내고
+            Node cur = q.poll();
             
-            if(visited[curNode.x][curNode.y]) continue;
-            if(curNode.x == maps.length-1 && curNode.y == maps[0].length-1) {
-                answer  = curNode.cost;
+            int curX = cur.getX();
+            int curY = cur.getY();
+            int curC = cur.getCost();
+            
+            if(visited[curX][curY] == 0 || maps[curX][curY] == 0) continue;
+            
+            if(curX == maps.length-1 && curY == maps[0].length-1) {
+                answer = cur.getCost();
                 break;
             }
             
-            // 방문 등록
-            visited[curNode.x][curNode.y] = true;
+            // 방문 처리
+            visited[curX][curY] = 0;
             
-            // 현재 노드가 갈 수 있는 노드 탐색
-            for(int i=0; i<4; i++) {
-                int x = dx[i] + curNode.x;
-                int y = dy[i] + curNode.y;
+            // 갈 수 있는 방향 queue에 저장
+            for(int j=0; j<4; j++) {
 
-                // 벽이거나 map 밖일 때 제외
-                if(y < 0 || x < 0 || x >= maps.length || y >= maps[0].length ) {
+                int x = curX+dx[j];
+                int y = curY+dy[j];
+
+                if(x < 0 || y < 0 || x >= maps.length || y >= maps[0].length) {
+                    continue;
+                } 
+                if(visited[x][y] == 0 || maps[x][y] == 0) {
                     continue;
                 }
-                if(maps[x][y] == 1) {
-                    q.add(new Node(x, y, curNode.cost+1));
-                }
+                q.offer(new Node(x, y, curC+1));
             }
             
         }
         
+            
         return answer;
     }
 }
