@@ -32,22 +32,13 @@ class Solution {
         }
         
         // 플로이드-워셜
-        for(int k = 1; k <= n; k++) {
-            for(int i = 1; i <= n; i++) {
-                for(int j = 1; j <= n; j++) {
+        for(int k=1; k<=n; k++) {
+            for(int i=1; i<=n; i++) {
+                for(int j=1; j<=n; j++) {
                     arr[i][j] = Math.min(arr[i][j], arr[i][k] + arr[k][j]);
                 }
             }
         }
-        
-        /*
-        for(int i=1; i<=n; i++) {
-            for(int j=1; j<=n; j++) {
-               System.out.print(arr[i][j] + " ");
-            }
-            System.out.println();
-        }
-        */
         
         for(int i=1; i<=n; i++) {
             int cnt = 0;
