@@ -4,68 +4,57 @@ class Solution {
     public int solution(int[][] jobs) {
         int answer = 0;
         
-        PriorityQueue<WorkNode> waitingQueue = new PriorityQueue<>((a, b) -> {
+        PriorityQueue<WorkNode> wQ = new PriorityQueue<>((a, b) -> {
             
-            // 작업 시간 > 요청 시각 > 작업 번호 작은 순 
-            if(a.getStartTime() == b.getStartTime()) {
+            if(a.startTime == b.startTime) {
                 return a.workNum - b.workNum;
             }
             
-            return a.getStartTime() - b.getStartTime();
-            
+            return a.startTime - b.startTime;
         });
         
-        PriorityQueue<WorkNode> resultQ = new PriorityQueue<>((a, b) -> {
+        PriorityQueue<WorkNode> rQ = new PriorityQueue<>((a, b) -> {
             
-            // 작업 시간 > 요청 시각 > 작업 번호 작은 순 
-            if(a.getDuringTime() == b.getDuringTime()) {
-
-                if(a.getStartTime() == b.getStartTime()) {
+            if(a.duringTime == b.duringTime) {
+                if(a.startTime == b.startTime) {
                     return a.workNum - b.workNum;
                 }
-
+                
                 return a.startTime - b.startTime;
             }
             
             return a.duringTime - b.duringTime;
-            
         });
         
         for(int i=0; i<jobs.length; i++) {
+            int workN = i;
+            int startT = jobs[i][0];
+            int duringT = jobs[i][1];
             
-            int workNum = i;               // 작업 번호
-            int duringTime = jobs[i][1];   // 작업 시간
-            int startTime = jobs[i][0];   // 요청 시각
-            
-            waitingQueue.add(new WorkNode(duringTime, startTime, workNum));
+            wQ.add(new WorkNode(duringT, startT, workN));
             
         }
         
         int sum = 0;
         int tmp = 0;
-        while(!waitingQueue.isEmpty() || !resultQ.isEmpty()) {
+        while(!wQ.isEmpty() || !rQ.isEmpty()) {
             
-            
-            
-            while(!waitingQueue.isEmpty() && tmp >= waitingQueue.peek().getStartTime()) {
-                resultQ.add(waitingQueue.poll());
+            while(!wQ.isEmpty() && wQ.peek().getStartTime() <= tmp) {
+                rQ.add(wQ.poll());
             }
             
-            if(resultQ.isEmpty()) {
-                tmp = waitingQueue.peek().getStartTime();
+            if(rQ.isEmpty()) {
+                tmp = wQ.peek().getStartTime();
                 continue;
             }
-            
-            WorkNode curNode = resultQ.poll();
+                
+            WorkNode curNode = rQ.poll();
             
             tmp = tmp + curNode.getDuringTime();
             sum += tmp - curNode.getStartTime();
-            
         }
         
-        //System.out.println("sum = " + sum + ", tmp = " + tmp);
-        
-        answer = sum / jobs.length;
+        answer = sum/jobs.length;
         
         return answer;
     }
