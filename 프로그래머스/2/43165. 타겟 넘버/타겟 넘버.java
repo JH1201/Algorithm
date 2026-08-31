@@ -4,27 +4,26 @@ class Solution {
     
     public int solution(int[] numbers, int target) {
         
-        dfs(numbers, target, 0, 0);
+        
+        dfs(0, numbers, 0, target);
       
         return count;
     }
     
-    public void dfs(int[] numbers, int target, int index, int sum) {
+    public void dfs(int idx, int[] numbers, int sum, int target) {
         
-        if(index >= numbers.length) {
+        if(idx >= numbers.length) {
             if(sum == target) {
                 count++;
-            } 
+                
+            }
             return;
         } 
         
-        // 덧셈
-        dfs(numbers, target, index+1, sum + numbers[index]);
+        dfs(idx+1, numbers, sum + numbers[idx], target);
         
-        // 뺄셈
-        dfs(numbers, target, index+1, sum - numbers[index]);
-        
-        
+        dfs(idx+1, numbers, sum - numbers[idx], target);
     }
+    
     
 }
