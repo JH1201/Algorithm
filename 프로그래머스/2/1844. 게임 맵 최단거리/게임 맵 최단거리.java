@@ -30,45 +30,44 @@ class Solution {
         int answer = -1;
         
         Queue<Node> q = new LinkedList<>();
-        int[][] visited = maps.clone();
         
-        int[] dy = {1, -1, 0, 0};
-        int[] dx = {0, 0, 1, -1};
+        q.offer(new Node(0, 0, 0));
         
-        q.offer(new Node(0,0,1));
-        
+        int endX = maps.length-1;
+        int endY = maps[0].length-1;
+            
         while(!q.isEmpty()) {
             
-            // queue 꺼내고
-            Node cur = q.poll();
+            Node curNode = q.poll();
+            int curX = curNode.getX();
+            int curY = curNode.getY();
             
-            int curX = cur.getX();
-            int curY = cur.getY();
-            int curC = cur.getCost();
-            
-            if(visited[curX][curY] == 0 || maps[curX][curY] == 0) continue;
-            
-            if(curX == maps.length-1 && curY == maps[0].length-1) {
-                answer = cur.getCost();
+            // 목적지 노드일 때
+            if(curX == endX && curY == endY) {
+                answer = curNode.getCost()+1;
                 break;
             }
             
-            // 방문 처리
-            visited[curX][curY] = 0;
+            // 방문한 노드 or 벽일 때
+            if(maps[curX][curY] == 0) {
+                continue;
+            }
             
-            // 갈 수 있는 방향 queue에 저장
-            for(int j=0; j<4; j++) {
-
-                int x = curX+dx[j];
-                int y = curY+dy[j];
-
-                if(x < 0 || y < 0 || x >= maps.length || y >= maps[0].length) {
+            // 현재 노드 방문 처리
+            maps[curX][curY] = 0;
+            
+            int[] x = {0, 0, 1, -1};
+            int[] y = {1, -1, 0, 0};
+            
+            // 갈 수 있는 노드 queue에 삽입
+            for(int i=0; i<4; i++) {
+                int dx = x[i] + curX;
+                int dy = y[i] + curY;
+                
+                if(dx < 0 || dy < 0 || dx >= maps.length || dy >= maps[0].length || maps[dx][dy] == 0) {
                     continue;
                 } 
-                if(visited[x][y] == 0 || maps[x][y] == 0) {
-                    continue;
-                }
-                q.offer(new Node(x, y, curC+1));
+                q.offer(new Node(dx, dy, curNode.getCost()+1));
             }
             
         }
