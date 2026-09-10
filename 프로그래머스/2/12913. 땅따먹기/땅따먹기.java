@@ -12,14 +12,17 @@ class Solution {
                 int max = 0;
                 
                 for(int pre=0; pre<4; pre++) {
+                    
                     if(pre == j) continue;
                     
                     max = Math.max(max, land[i-1][pre]);
                 }
                 
                 land[i][j] += max;
+                
             }
         }
+        
         
         for(int i=0; i<4; i++) {
             answer = Math.max(answer, land[land.length-1][i]);
