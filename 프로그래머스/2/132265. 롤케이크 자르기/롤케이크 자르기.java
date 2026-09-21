@@ -4,34 +4,32 @@ class Solution {
     public int solution(int[] topping) {
         int answer = 0;
         
+        HashSet<Integer> left = new HashSet<>();
         HashMap<Integer, Integer> right = new HashMap<>();
-        HashSet<Integer> left = new HashSet<Integer>();
         
-        for(int t : topping) {
-            if(right.get(t) == null) right.put(t, 1);
-            else right.put(t, right.get(t)+1);
+        for(int i=0; i<topping.length; i++) {
+            
+            if(right.get(topping[i]) == null) {
+                right.put(topping[i], 1);
+                continue;
+            }
+            
+            right.put(topping[i], right.get(topping[i])+1);
         }
         
         for(int i=0; i<topping.length; i++) {
             
-            int goLeft = topping[i];
+            left.add(topping[i]);
             
-            left.add(goLeft);
-            
-            int tmp = right.get(goLeft)-1;
-            
-             if(tmp == 0) {
-                right.remove(goLeft);
-            } 
-            
-            else {
-                right.put(goLeft, tmp);
+            if(right.get(topping[i]) == 1) {
+                right.remove(topping[i]);
             }
+            else right.put(topping[i], right.get(topping[i])-1);
             
-            //System.out.println(i + " 번째: " + "goLeft: " + goLeft + " / left: " + left.size() + ", right: " + right.keySet().size());
-            //System.out.println(tmp);
             
-            if(right.keySet().size() == left.size()) answer++;
+            
+            if(left.size() == right.keySet().size()) answer++;
+            
         }
         
         
