@@ -2,68 +2,45 @@ import java.util.*;
 
 class Solution {
     public int[] solution(String msg) {
-        ArrayList<Integer> answer = new ArrayList<>();
+        ArrayList<Integer> list = new ArrayList<>();
         
-        HashMap<String, Integer> dic = new HashMap<>();
-        String s = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        HashMap<String, Integer> map = new HashMap<>();
         
-        int nextNum = 27;
-        
-        // 사전 초기화
-        for(int i=0; i<s.length(); i++) {
-            
-            char c = s.charAt(i);
-            dic.put(String.valueOf(c), i+1);
-            
+        for(int i=0; i<26; i++) {
+            char c = (char)('A' + i);
+            map.put(String.valueOf(c), i+1);
         }
         
-        int i = 0;
-        while(i<msg.length()) {
+        StringBuilder sb = new StringBuilder();
+        String prevStr = "";
+        for(int i=0; i<msg.length(); i++) {
             char c = msg.charAt(i);
-            String tmp = String.valueOf(c);
-            
-            boolean added = false;
-            
-            StringBuilder sb = new StringBuilder();
             
             sb.append(c);
+            String curStr = sb.toString();
             
-            int cnt = 0;
-            for(int j=i+1; j<msg.length(); j++) {
-                    
-                char nextC = msg.charAt(j);
-                sb.append(String.valueOf(nextC));
+            if(map.get(curStr) != null) {
+                prevStr = curStr;
+            }
+            else {
+                list.add(map.get(prevStr));
+                map.put(curStr, map.size()+1);
                 
-                if(dic.get(sb.toString()) == null) {
-                    
-                    //System.out.println("1 " + sb.toString());
-                    
-                    answer.add(dic.get(tmp));
-                    dic.put(sb.toString(), nextNum);
-                    nextNum++;
-                    i += tmp.length();
-                    added = true;
-                    break;
-                }
-                else {
-                    tmp = sb.toString();
-                }
+                sb.setLength(0);
+                
+                sb.append(c);
+                prevStr = sb.toString();
             }
-            
-            if(!added) {
-                answer.add(dic.get(tmp));
-                i += tmp.length();
-            }
-            
         }
         
-        int[] ans = new int[answer.size()];
+        list.add(map.get(sb.toString()));
         
-        for(int k=0; k<answer.size(); k++) {
-            ans[k] = answer.get(k);
+        int[] answer = new int[list.size()];
+        
+        for(int i=0; i<list.size(); i++) {
+            answer[i] = list.get(i);
         }
         
-        
-        return ans;
+        return answer;
     }
 }
