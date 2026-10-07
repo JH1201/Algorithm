@@ -4,89 +4,94 @@ class Solution {
     public int solution(int[][] jobs) {
         int answer = 0;
         
-        PriorityQueue<WorkNode> wQ = new PriorityQueue<>((a, b) -> {
-            
-            if(a.startTime == b.startTime) {
-                return a.workNum - b.workNum;
+        // 대기 큐 
+        // 겹치는 작업은 대기큐에 넣고 우선순위가 높은 것 부터 사용
+        // 작업 시간이 짧은 > 요청 시각이 빠른 > 작업의 번호가 작은 순
+        PriorityQueue<WorkNode> waitingQueue = new PriorityQueue<>((a, b) -> {
+            if(a.getStartTime() == b.getStartTime()) {
+                
+                return a.getIndex() - b.getIndex();
             }
-            
-            return a.startTime - b.startTime;
+               
+            return a.getStartTime() - b.getStartTime();
         });
         
-        PriorityQueue<WorkNode> rQ = new PriorityQueue<>((a, b) -> {
-            
-            if(a.duringTime == b.duringTime) {
-                if(a.startTime == b.startTime) {
-                    return a.workNum - b.workNum;
+        PriorityQueue<WorkNode> runningQueue = new PriorityQueue<>((a, b) -> {
+            if(a.getDuringTime() == b.getDuringTime()) {
+                
+                if(a.getStartTime() == b.getStartTime()) {
+                     return a.getIndex() - b.getIndex();
                 }
                 
-                return a.startTime - b.startTime;
+                return a.getStartTime() - b.getStartTime();
             }
+               
             
-            return a.duringTime - b.duringTime;
+            return a.getDuringTime() - b.getDuringTime();
         });
         
         for(int i=0; i<jobs.length; i++) {
-            int workN = i;
-            int startT = jobs[i][0];
-            int duringT = jobs[i][1];
-            
-            wQ.add(new WorkNode(duringT, startT, workN));
-            
+            waitingQueue.add(new WorkNode(i, jobs[i][1], jobs[i][0]));
         }
         
-        int sum = 0;
-        int tmp = 0;
-        while(!wQ.isEmpty() || !rQ.isEmpty()) {
+        int curTime = 0;
+        int total = 0 ;
+        while(!waitingQueue.isEmpty() || !runningQueue.isEmpty()) {
             
-            while(!wQ.isEmpty() && wQ.peek().getStartTime() <= tmp) {
-                rQ.add(wQ.poll());
+            while(!waitingQueue.isEmpty() && waitingQueue.peek().getStartTime() <= curTime) {
+                 runningQueue.add(waitingQueue.poll());
             }
-            
-            if(rQ.isEmpty()) {
-                tmp = wQ.peek().getStartTime();
+            if(runningQueue.isEmpty()) {
+                curTime = waitingQueue.peek().getStartTime();
                 continue;
             }
-                
-            WorkNode curNode = rQ.poll();
             
-            tmp = tmp + curNode.getDuringTime();
-            sum += tmp - curNode.getStartTime();
+            WorkNode curNode = runningQueue.poll();
+            
+            curTime += curNode.getDuringTime();
+            total += curTime - curNode.getStartTime();
+            
         }
         
-        answer = sum/jobs.length;
+        answer = total / jobs.length;
         
         return answer;
     }
     
-    
     class WorkNode {
-        int duringTime;   // 작업 시간
-        int startTime;    // 요청 시각
-        int workNum;      // 작업 번호
+        int index;
+        int duringTime;
+        int startTime;
         
-        public WorkNode(int d, int s, int wn) {
+        public WorkNode(int i, int d, int s) {
+            this.index = i;
             this.duringTime = d;
             this.startTime = s;
-            this.workNum = wn;
         }
         
-        public int getStartTime() {
-            return this.startTime;
+        public int getIndex() {
+            return this.index;
         }
         
-        public void setStartTime(int st) {
-            this.startTime = st;
+        public void setIndex(int i) {
+            this.index = i;
         }
         
         public int getDuringTime() {
             return this.duringTime;
         }
         
-        public void setDuringTime(int dt) {
-            this.duringTime = dt;
+        public void setDuringTime(int d) {
+            this.duringTime = d;
         }
         
+        public int getStartTime() {
+            return this.startTime;
+        }
         
+        public void setStartTime(int s) {
+            this.startTime = s;
+        }
     }
+    
 }
