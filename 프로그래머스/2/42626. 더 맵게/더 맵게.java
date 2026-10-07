@@ -4,32 +4,37 @@ class Solution {
     public int solution(int[] scoville, int K) {
         int answer = 0;
         
-        PriorityQueue<Integer> q = new PriorityQueue<>();
+        PriorityQueue<Integer> pQ = new PriorityQueue<>((a, b) -> {
+            return a - b;
+        });
         
-        //Arrays.sort(scoville);
+        for(int i : scoville) {
+            pQ.add(i);
+        }
         
-        for(int i : scoville) q.add(i);
-        
-        while(q.size() >= 2) {
-            if(q.peek() < K) {
-                int fir_min = q.poll();
-                int sec_min = q.poll();
-
-                int scob = getScobill(fir_min, sec_min);
-                q.add(scob);
-                answer++;
+        int cnt = 0;
+        while(!pQ.isEmpty()) {
+            
+            if(pQ.size() == 1) {
+                if(pQ.peek() >= K) return answer; 
+                else return -1;
             }
+            
+            else if(pQ.peek() < K) {
+                int a = pQ.poll();
+                int b = pQ.poll();
+                int tmp = a + 2 * b;
+                answer++;
+                pQ.add(tmp);
+            }
+            
             else {
                 break;
             }
         }
         
-        if(q.peek() < K) answer = -1;
-
+        
         return answer;
     }
     
-    public int getScobill(int a, int b) {
-        return a + (b*2);
-    }
 }
