@@ -5,47 +5,60 @@ class Solution {
         int answer = 0;
         
         for(int i=1; i<triangle.length; i++) {
-            for(int j=0; j<triangle[i].length; j++) {
+            for(int j=0; j<=i; j++) {
                 
-                int tmp = 0;
+                int leftValue = 0;
+                int rightValue = 0;
                 
-                if (j == 0) {
-                    tmp = triangle[i][0] + triangle[i-1][0];
+                
+                // 오른쪽 값이 없을 때
+                if(j == i) {
+                    leftValue = getLeftValue(i ,j, triangle);
+                    triangle[i][j] = leftValue + triangle[i][j];
+                    continue;
                 }
-                else if(j == triangle[i].length-1) {
-                    tmp = triangle[i][triangle[i].length-1] + triangle[i-1][triangle[i].length-2];
+                
+                // 왼쪽 값이 없을 때
+                else if(j == 0) {
+                    rightValue = getRigthValue(i ,j, triangle);
+                    triangle[i][j] = rightValue + triangle[i][j];
+                    continue;
                 }
+                
                 else {
-                    int max = 0;
                     
-                    // 왼쪽 위
-                    int leftUpvalue = triangle[i][j] + triangle[i-1][j-1];
+                    int tmp = triangle[i][j];
                     
-                    // 오른쪽 위
-                    int rightUpvalue = triangle[i][j] + triangle[i-1][j];
+                    leftValue = getLeftValue(i, j, triangle);
+                    tmp = Math.max(leftValue+triangle[i][j], triangle[i][j]);
                     
-                    if(leftUpvalue > rightUpvalue) {
-                        tmp = leftUpvalue;
-                    }
-                    else {
-                        tmp = rightUpvalue;
-                    }
+                    rightValue = getRigthValue(i, j, triangle);
+                    triangle[i][j] = Math.max(rightValue+triangle[i][j], tmp); 
                 }
-                
-                triangle[i][j] = tmp;
-                
+            }   
+        }
+        
+        for(int j=0; j<triangle[triangle.length-1].length; j++) {
+            answer = Math.max(answer, triangle[triangle.length-1][j]);
+        }   
+        
+        /*
+        for(int[] arr : triangle) {
+            for(int j : arr) {
+                System.out.print(j + " ");
             }
+            System.out.println();
         }
-        
-        int len = triangle.length-1;
-        for(int j=0; j<triangle[len].length; j++) {
-                
-            //System.out.print(triangle[len][j] + " ");
-
-            answer = Math.max(answer, triangle[len][j]);
-        }
-        
+        */
         
         return answer;
+    }
+    
+    public int getLeftValue(int i, int j, int[][] triangle) {
+        return triangle[i-1][j-1];
+    }
+    
+    public int getRigthValue(int i, int j, int[][] triangle) {
+        return triangle[i-1][j];
     }
 }
