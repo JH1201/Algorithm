@@ -6,7 +6,6 @@ class Solution {
         Stack<String> stack = new Stack<>();
 
         s = s.trim();
-        System.out.println(s);
 
         StringBuilder sb = new StringBuilder();
         for(int i=0; i<s.length(); i++) {
