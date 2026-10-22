@@ -2,15 +2,12 @@ import java.util.*;
 
 class Solution {
     
-    boolean[] v;
     
     public int solution(int[] picks, String[] minerals) {
         int answer = 0;
         
-        v = new boolean[picks.length];
-        
         // 곡괭이 갯수, 광물 순서, 피로도, 곡괭이별 채굴 가능 횟수
-        answer = dfs(picks, minerals);
+        answer= dfs(picks, minerals);
         
         return answer;
     }
@@ -25,44 +22,40 @@ class Solution {
             
             if(picks[i] == 0) continue;
             
-            picks[i] = picks[i] - 1; // 곡괭이 하나 사용
+            int canMingCnt = Math.min(5, minerals.length);
             
-            // 하나당 5개 광물 최대
-            int maxMining = Math.min(5, minerals.length);
+            picks[i] -= 1;
             
-            // 피로도
-            int tired = 0;
+            int c = 0;
             
-            for(int j=0; j<maxMining; j++) {
-                if(i==0) tired += 1; // 곡괭이가 다이아몬드일 때
+            for(int j=0; j<canMingCnt; j++) {
                 
-                // 곡괭이가 철일 때
+                if(i==0) c += 1;
                 else if(i == 1) {
-                    if(minerals[j].equals("diamond")) tired += 5;
-                    else tired += 1;
+                    if(minerals[j].equals("diamond")) c += 5;
+                    else c += 1;
                 }
-                
                 else {
-                    if(minerals[j].equals("diamond")) tired += 25;
-                    else if(minerals[j].equals("iron")) tired += 5;
-                    else tired += 1;
+                    if(minerals[j].equals("diamond")) c += 25;
+                    else if(minerals[j].equals("iron")) c += 5;
+                    else c += 1;
                 }
-                    
+                   
             }
             
-            String[] newMinerals = new String[minerals.length - maxMining];
+            String[] newMinerals = new String[minerals.length - canMingCnt];
             for(int k=0; k<newMinerals.length; k++) {
-                newMinerals[k] = minerals[maxMining + k];
+                newMinerals[k] = minerals[canMingCnt + k];
             }
             
-            res = Math.min(res, tired + dfs(picks, newMinerals));
+            res = Math.min(res, c + dfs(picks, newMinerals));
             
-            picks[i] = picks[i] + 1; // 백트래킹
-            
+            picks[i] += 1;
         }
         
         if(res == Integer.MAX_VALUE) return 0;
         
         return res;
     }
+   
 }
