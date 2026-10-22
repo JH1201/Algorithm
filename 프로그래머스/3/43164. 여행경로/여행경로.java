@@ -2,53 +2,56 @@ import java.util.*;
 
 class Solution {
     
-    Stack<String> s = new Stack<>();
-    ArrayList<String> answer = new ArrayList<>();
     boolean[] visited;
-    boolean flag = false;
+    ArrayList<String> list = new ArrayList<>();
+    int cnt = 0;
     
     public String[] solution(String[][] tickets) {
         
+        
         visited = new boolean[tickets.length];
         
-        // tickets 정렬
-        Arrays.sort(tickets, (a,b) -> {
+        Arrays.sort(tickets, (a, b) -> {
             if(a[0].equals(b[0])) {
                 return a[1].compareTo(b[1]);
-            }
+            } 
             return a[0].compareTo(b[0]);
-        });        
+        });
         
-        answer.add("ICN");
-        dfs("ICN", tickets, 0);
+        dfs(tickets, "ICN");
       
-        return answer.toArray(new String[0]);
+        return list.toArray(new String[0]);
     }
     
-    public void dfs(String curC, String[][] tickets, int cnt)  {
+    public boolean dfs(String[][] tickets, String next) {
         
-        // 탈출 조건
         if(cnt == tickets.length) {
-            flag = true;
-            return ;
+            list.add(next);
+            return true;
         }
         
         for(int i=0; i<tickets.length; i++) {
-            
             if(visited[i]) continue;
-            if(!curC.equals(tickets[i][0])) continue;
-            
-            // 방문 처리
-            visited[i] = true;
-            String nextCountry = tickets[i][1];
-            
-            answer.add(nextCountry);
-            
-            dfs(nextCountry, tickets, cnt+1);
-            if(flag) continue;
-            visited[i] = false;
-            answer.remove(answer.size()-1);
+            if(tickets[i][0].equals(next)) {
+                cnt++;
+                visited[i] = true;
+                list.add(next);
+                
+                // 이 경로로 모든 티켓 사용에 성공
+                if(dfs(tickets, tickets[i][1])) {
+                    return true;
+                }
+                
+                // 아닌 경로일 때
+                cnt--;
+                visited[i] = false;
+                list.remove(list.size()-1);
+                
+            } 
         }
+        
+        return false;
+        
     }
     
 }
