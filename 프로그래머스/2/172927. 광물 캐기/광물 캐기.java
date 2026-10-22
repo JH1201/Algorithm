@@ -21,50 +21,46 @@ class Solution {
         
         int res = Integer.MAX_VALUE;
         
-        
         for(int i=0; i<picks.length; i++) {
             
             if(picks[i] == 0) continue;
             
-            // 곡괭이 사용
-            picks[i] = picks[i] - 1;
+            picks[i] = picks[i] - 1; // 곡괭이 하나 사용
             
-            int canMiningLen = Math.min(5, minerals.length);
-            int fatigue = 0;
-
-            // 곡괭이 종류
-            int rhr = i;
+            // 하나당 5개 광물 최대
+            int maxMining = Math.min(5, minerals.length);
             
-            for(int j=0; j<canMiningLen; j++) {
-                if(rhr == 0) {
-                    fatigue += 1;
-                }
+            // 피로도
+            int tired = 0;
+            
+            for(int j=0; j<maxMining; j++) {
+                if(i==0) tired += 1; // 곡괭이가 다이아몬드일 때
                 
-                else if(rhr == 1) {
-                    if(minerals[j].equals("diamond")) fatigue += 5;
-                    else fatigue += 1;
+                // 곡괭이가 철일 때
+                else if(i == 1) {
+                    if(minerals[j].equals("diamond")) tired += 5;
+                    else tired += 1;
                 }
                 
                 else {
-                    if(minerals[j].equals("diamond")) fatigue += 25;
-                    else if(minerals[j].equals("iron")) fatigue += 5;
-                    else fatigue += 1;
+                    if(minerals[j].equals("diamond")) tired += 25;
+                    else if(minerals[j].equals("iron")) tired += 5;
+                    else tired += 1;
                 }
+                    
             }
             
-            String[] newMinerals = new String[minerals.length - canMiningLen];
-
-            for(int j=0; j<newMinerals.length; j++) {
-                newMinerals[j] = minerals[canMiningLen + j];
+            String[] newMinerals = new String[minerals.length - maxMining];
+            for(int k=0; k<newMinerals.length; k++) {
+                newMinerals[k] = minerals[maxMining + k];
             }
-        
-            res = Math.min(res, fatigue + dfs(picks, newMinerals));    
             
-            // 백트랙킹
-            picks[i] = picks[i] + 1;
+            res = Math.min(res, tired + dfs(picks, newMinerals));
+            
+            picks[i] = picks[i] + 1; // 백트래킹
+            
         }
         
-        // 사용할 곡괭이가 하나도 없는 경우
         if(res == Integer.MAX_VALUE) return 0;
         
         return res;
