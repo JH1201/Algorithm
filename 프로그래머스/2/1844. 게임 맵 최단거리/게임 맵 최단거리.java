@@ -2,7 +2,61 @@ import java.util.*;
 
 class Solution {
     
-    class Node {
+    boolean[][] v;
+    
+    public int solution(int[][] maps) {
+        int answer = -1;
+        
+        Queue<Node> q = new LinkedList<>();
+        
+        Node startNode = new Node(0,0,1);
+        q.add(startNode);
+        
+        int targetI = maps.length-1;
+        int targetJ = maps[0].length-1;
+        
+        //System.out.println(targetI + ", " + targetJ);
+        
+        while(!q.isEmpty()) {
+            
+            Node curNode = q.poll();
+            
+            //System.out.println(curNode.getX() + ", " + curNode.getY());
+             
+            
+            // 목표 지점일 때 break
+            if(curNode.getX() == targetI && curNode.getY() == targetJ) {
+                answer = curNode.getCost();
+                break;
+            }
+            
+            if(maps[curNode.getX()][curNode.getY()] == 0) continue;
+            
+            // 현재 노드 방문처리
+            maps[curNode.getX()][curNode.getY()] = 0;
+            
+            // 현재 노드에서 갈 수 있는 Node 큐에 삽입
+            int[] x = {1, -1, 0, 0};
+            int[] y = {0, 0, -1, 1};
+            
+            for(int i=0; i<4; i++) {
+                int dx = curNode.getX() + x[i];
+                int dy = curNode.getY() + y[i];
+                
+                if(dx < 0 || dx > targetI || dy < 0 || dy > targetJ) continue;
+                if(maps[dx][dy] == 0) continue;
+                
+                Node nextNode = new Node(dx, dy, curNode.getCost() + 1);
+                q.offer(nextNode);
+            }
+            
+        }
+        
+            
+        return answer;
+    }
+    
+     class Node {
         int x;
         int y;
         int cost;
@@ -24,55 +78,5 @@ class Solution {
         int getCost() {
             return this.cost;
         }
-    }
-    
-    public int solution(int[][] maps) {
-        int answer = -1;
-        
-        Queue<Node> q = new LinkedList<>();
-        
-        q.offer(new Node(0, 0, 0));
-        
-        int endX = maps.length-1;
-        int endY = maps[0].length-1;
-            
-        while(!q.isEmpty()) {
-            
-            Node curNode = q.poll();
-            int curX = curNode.getX();
-            int curY = curNode.getY();
-            
-            // 목적지 노드일 때
-            if(curX == endX && curY == endY) {
-                answer = curNode.getCost()+1;
-                break;
-            }
-            
-            // 방문한 노드 or 벽일 때
-            if(maps[curX][curY] == 0) {
-                continue;
-            }
-            
-            // 현재 노드 방문 처리
-            maps[curX][curY] = 0;
-            
-            int[] x = {0, 0, 1, -1};
-            int[] y = {1, -1, 0, 0};
-            
-            // 갈 수 있는 노드 queue에 삽입
-            for(int i=0; i<4; i++) {
-                int dx = x[i] + curX;
-                int dy = y[i] + curY;
-                
-                if(dx < 0 || dy < 0 || dx >= maps.length || dy >= maps[0].length || maps[dx][dy] == 0) {
-                    continue;
-                } 
-                q.offer(new Node(dx, dy, curNode.getCost()+1));
-            }
-            
-        }
-        
-            
-        return answer;
     }
 }
