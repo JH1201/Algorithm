@@ -5,25 +5,22 @@ class Solution {
     public int solution(int[] numbers, int target) {
         
         
-        dfs(0, numbers, 0, target);
+        dfs(numbers, target, 0, 0);
       
         return count;
     }
     
-    public void dfs(int idx, int[] numbers, int sum, int target) {
+    public void dfs(int[] numbers, int target, int sum, int idx) {
         
         if(idx >= numbers.length) {
             if(sum == target) {
                 count++;
-                
-            }
-            return;
-        } 
+            }   
+            return ;
+        }
         
-        dfs(idx+1, numbers, sum + numbers[idx], target);
-        
-        dfs(idx+1, numbers, sum - numbers[idx], target);
+        dfs(numbers, target, sum + numbers[idx], idx+1);
+        dfs(numbers, target, sum - numbers[idx], idx+1);
     }
-    
     
 }
