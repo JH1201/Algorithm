@@ -8,16 +8,17 @@ class Solution {
         
         int start = 0;
         int end = people.length - 1;
+        
         while(start <= end) {
-            
             int sum = people[start] + people[end];
             
-            if(sum > limit) {
+            if(sum <= limit) {
+                start++;
                 end--;
                 answer++;
             }
+            
             else {
-                start++;
                 end--;
                 answer++;
             }
