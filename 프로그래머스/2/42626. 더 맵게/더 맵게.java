@@ -3,36 +3,31 @@ import java.util.*;
 class Solution {
     public int solution(int[] scoville, int K) {
         int answer = 0;
+      
+        // 섞은 음식의 스코빌 지수 = 가장 맵지 않은 음식의 스코빌 지수 + (두 번째로 맵지 않은 음식의 스코빌 지수 * 2)
         
-        PriorityQueue<Integer> pQ = new PriorityQueue<>((a, b) -> {
-            return a - b;
-        });
+        PriorityQueue<Integer> pQ = new PriorityQueue<>();
         
         for(int i : scoville) {
-            pQ.add(i);
+            pQ.offer(i);
         }
         
-        int cnt = 0;
         while(!pQ.isEmpty()) {
             
-            if(pQ.size() == 1) {
-                if(pQ.peek() >= K) return answer; 
-                else return -1;
-            }
+            int curVal = pQ.poll();
             
-            else if(pQ.peek() < K) {
-                int a = pQ.poll();
-                int b = pQ.poll();
-                int tmp = a + 2 * b;
-                answer++;
-                pQ.add(tmp);
-            }
+            if(curVal >= K) break;
             
             else {
-                break;
+                
+                if(pQ.isEmpty()) return -1;
+                
+                int newVal = curVal + (2 * pQ.poll());
+                pQ.offer(newVal);
+                answer += 1;
             }
+            
         }
-        
         
         return answer;
     }
