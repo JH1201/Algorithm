@@ -2,69 +2,46 @@ import java.util.*;
 
 class Solution {
     public int solution(int[] order) {
+        
         int answer = 0;
         
-        Stack<Integer> s = new Stack<>();
-        Queue<Integer> q = new LinkedList<>();
+        Stack<Integer> waitS = new Stack<>();
+        Stack<Integer> resultS = new Stack<>();
         
-        for(int i=1; i<=order.length; i++) {
-            q.add(i);
-        }
+        boolean[] v = new boolean[order.length];
         
-        int t = 0;
-        int targetNum = order[t];
+        // 4 3 1 2 5
+        // 1 2 3 4 5
         
-        int check = 0;
+        int curBox = 1;
         
-        while(t < order.length) {
+        for(int i=0; i<order.length; i++) {
             
-            if(q.isEmpty()) break;
+            int wantedBox = order[i];
             
-            targetNum = order[t];
-            
-            if(!q.isEmpty()) {
-                if(targetNum == q.peek()) {
-                    answer++;
-                    t += 1;
-                    q.poll();
-                }
-
-                else if(targetNum != q.peek()) {
-                    if(!s.isEmpty()) {
-                        if(s.peek() == targetNum) {
-                            answer++;
-                            s.pop();
-                            t += 1;
-                            continue;
-                        }
-                        else {
-                            s.push(q.poll());
-                        }
-                        continue;
-                    }
-                    s.push(q.poll());
-                }
+            if(!waitS.isEmpty() && waitS.peek() == wantedBox) {
+                resultS.push(wantedBox);
+                waitS.pop();
+                continue;
             }
             
-        }
-        
-        while(!s.isEmpty()) {
-            
-            targetNum = order[t];
-            //System.out.println("s.size() "+ s.size() + " peek : " + s.peek() + " target : " + targetNum + " t: " + t);
-            
-            if(s.peek() == targetNum) {
-                s.pop();
-                answer++;
-                t += 1;
-                if(t >= order.length) break;
-                targetNum = order[t];
+            while(curBox <= order.length && curBox <= wantedBox) {
+                if(curBox == wantedBox) {
+                    resultS.push(wantedBox);
+                    curBox++;
+                    break;
+                }
+                
+                waitS.push(curBox);
+                curBox++;
             }
-            else {
+            
+            // 원하는 상자를 적재하지 못했다면 종료
+            if(wantedBox != resultS.peek()) {
                 break;
             }
         }
-        
+        answer = resultS.size();
         
         return answer;
     }
