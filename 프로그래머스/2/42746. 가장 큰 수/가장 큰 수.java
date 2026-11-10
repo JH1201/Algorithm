@@ -18,16 +18,19 @@ class Solution {
             
         });
         
+        if(arr[0] == 0) return "0";
+        
         for(int i : arr) {
             answer += Integer.toString(i);
         }
-        
+        /*
         int cnt = 0;
         for(int i=0; i<answer.length(); i++) {
             if(answer.charAt(i) == '0') cnt ++;
         }
         
         if(cnt == answer.length()) return "0";
+        */
         
         return answer;
     }
