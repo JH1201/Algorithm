@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.Arrays;
 
 class Solution {
     public String solution(int[] numbers) {
@@ -10,22 +9,25 @@ class Solution {
         for (int i = 0; i < numbers.length; i++) {
             arr[i] = numbers[i];
         }
-        
+
         Arrays.sort(arr, (a, b) -> {
-            String t1 = Integer.toString(a);
-            String t2 = Integer.toString(b);
+            String aStr = Integer.toString(a);
+            String bStr = Integer.toString(b);
             
-            return (t2+t1).compareTo(t1+t2);
+            return (bStr+aStr).compareTo(aStr+bStr);
+            
         });
         
-        if(arr[0] == 0) return "0";
-        
-        StringBuilder sb = new StringBuilder();
         for(int i : arr) {
-            sb.append(Integer.toString(i));
+            answer += Integer.toString(i);
         }
         
-        answer = sb.toString();
+        int cnt = 0;
+        for(int i=0; i<answer.length(); i++) {
+            if(answer.charAt(i) == '0') cnt ++;
+        }
+        
+        if(cnt == answer.length()) return "0";
         
         return answer;
     }
