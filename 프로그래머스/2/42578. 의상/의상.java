@@ -2,31 +2,28 @@ import java.util.*;
 
 class Solution {
     public int solution(String[][] clothes) {
-        int answer = 1;
+        int answer = 0;
         
         HashMap<String, ArrayList<String>> map = new HashMap<>();
+        HashSet<String> assort = new HashSet<>();
         
-        for(String[] s : clothes) {
-            if(map.get(s[1]) == null) {
-                ArrayList<String> arr = new ArrayList<>();
-                arr.add(s[0]);
-                
-                map.put(s[1], arr);
-            }
+        for(int i=0; i<clothes.length; i++) {
+            ArrayList<String> list = map.getOrDefault(clothes[i][1], new ArrayList<>());
+            list.add(clothes[i][0]);
             
-            else {
-                map.get(s[1]).add(s[0]);
-            }
+            map.put(clothes[i][1], list);
+            assort.add(clothes[i][1]);
         }
         
+        int sum = 1;
         
-        for(String key : map.keySet()) {
-            
-            //System.out.println(key + ", " + map.get(key).size());
-            answer *= (map.get(key).size()+1);
+        for(String key : assort) {
+            sum *= (map.get(key).size() + 1);
         }
+        
+        answer = sum - 1;
 
-        return answer-1;
+        return answer;
         
     }
 }
