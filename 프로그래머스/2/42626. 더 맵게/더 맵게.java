@@ -8,25 +8,24 @@ class Solution {
         
         PriorityQueue<Integer> pQ = new PriorityQueue<>();
         
-        for(int i : scoville) {
+        for(int i :scoville) {
             pQ.offer(i);
         }
         
-        while(!pQ.isEmpty()) {
+        
+        while(!pQ.isEmpty() && pQ.peek() < K) {
+            int fir = pQ.poll();
+            int newScobill = 0;
             
-            int curVal = pQ.poll();
-            
-            if(curVal >= K) break;
-            
-            else {
-                
-                if(pQ.isEmpty()) return -1;
-                
-                int newVal = curVal + (2 * pQ.poll());
-                pQ.offer(newVal);
-                answer += 1;
+            if(pQ.isEmpty()) {
+                if(fir < K) return -1;
             }
-            
+            else {
+                int sec = pQ.poll();
+                newScobill = fir + 2 * sec;
+                pQ.offer(newScobill);
+                answer++;
+            }
         }
         
         return answer;
