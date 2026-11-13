@@ -8,6 +8,7 @@ class Solution {
         
         String[] tmpStr = new String[cities.length];
         
+        // 엣지 잘 확인하기
         if(cacheSize == 0) return cities.length * 5; 
         
         for(int i=0; i<cities.length; i++) {
