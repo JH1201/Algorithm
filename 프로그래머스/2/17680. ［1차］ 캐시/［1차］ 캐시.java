@@ -5,34 +5,37 @@ class Solution {
         int answer = 0;
         
         Queue<String> q = new LinkedList<>();
-        int idx = 0;
         
-        if(cacheSize == 0) return cities.length * 5;
+        String[] tmpStr = new String[cities.length];
+        
+        if(cacheSize == 0) return cities.length * 5; 
+        
+        for(int i=0; i<cities.length; i++) {
+            tmpStr[i] = cities[i].toLowerCase();
+        }
         
         for(int i=0; i<cities.length; i++) {
             
-            if(q.isEmpty()) {
-                q.add(cities[i].toLowerCase());
-                answer += 5;
-                idx++;
-            }
+            String curCity = tmpStr[i];
             
+            if(q.isEmpty()) {
+                q.offer(curCity);
+                answer += 5;
+            }
             else {
-                if(q.contains(cities[i].toLowerCase())) {
+                if(q.contains(curCity)) {
                     answer += 1;
-                    q.remove(cities[i].toLowerCase());
-                    q.add(cities[i].toLowerCase());
+                    q.remove(curCity);
+                    q.offer(curCity);
                 }
                 else {
-                    if(idx == cacheSize) {
+                    if(q.size() == cacheSize) {
                         q.poll();
-                        q.add(cities[i].toLowerCase());
+                        q.offer(curCity);
                     }
                     else {
-                        q.add(cities[i].toLowerCase());
-                        idx++;
+                        q.offer(curCity);
                     }
-                    
                     answer += 5;
                 }
             }
