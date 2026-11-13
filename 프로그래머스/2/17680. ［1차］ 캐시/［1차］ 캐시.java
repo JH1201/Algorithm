@@ -29,7 +29,7 @@ class Solution {
                     q.offer(curCity);
                 }
                 else {
-                    if(q.size() == cacheSize) {
+                    if(q.size() >= cacheSize) {
                         q.poll();
                         q.offer(curCity);
                     }
