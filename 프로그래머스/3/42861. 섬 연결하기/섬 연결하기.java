@@ -8,16 +8,13 @@ class Solution {
     public int solution(int n, int[][] costs) {
         int answer = 0;
         
-        // 최소 신장 트리
-        
-        // 비용이 싼 순서로 정렬
         Arrays.sort(costs, (a, b) -> {
-            return a[2] - b[2];        
+            return a[2] - b[2];
         });
         
-        // 부모 노드 초기화
         parent = new int[n];
         
+        // 부모 그룹 초기화
         for(int i=0; i<n; i++) {
             parent[i] = i;
         }
@@ -28,7 +25,7 @@ class Solution {
             int a = cost[0];
             int b = cost[1];
             int c = cost[2];
-
+            
             if(find(a) != find(b)) {
                 union(a, b);
                 answer += c;
@@ -39,19 +36,20 @@ class Solution {
         return answer;
     }
     
-    public int find(int n) {
-        if(parent[n] == n) return n;
-        
-        return parent[n] = find(parent[n]);
+    public int find(int a) {
+        if(parent[a] == a) return a;
+        return find(parent[a]);
     }
     
     public void union(int a, int b) {
-        int pa = find(a);
-        int pb = find(b);
+        int pA = find(a);
+        int pB = find(b);
         
-        if(pa != pb) {
-            parent[pb] = pa;
+        if(pA != pB) {
+            parent[pA] = pB;
         }
         
     }
+    
+
 }
