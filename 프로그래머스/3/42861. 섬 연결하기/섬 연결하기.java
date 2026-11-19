@@ -36,11 +36,13 @@ class Solution {
         return answer;
     }
     
+    // 부모 노드 찾기
     public int find(int a) {
         if(parent[a] == a) return a;
         return find(parent[a]);
     }
     
+    // 같은 그룹으로 연결
     public void union(int a, int b) {
         int pA = find(a);
         int pB = find(b);
